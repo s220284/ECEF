@@ -2,253 +2,238 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Shelly Palmer ECEF 2026 Post-Read</title>
 <meta name="description" content="A mental model for AI in the events industry. Shelly Palmer's ECEF '26 post-read: tasks vs workflows vs agents, the harness as your moat, the eval flywheel, and why trust becomes the product.">
 <meta property="og:title" content="Shelly Palmer ECEF 2026 Post-Read">
 <meta property="og:description" content="A mental model for AI in the events industry, from Shelly Palmer's ECEF '26 session.">
 <meta property="og:type" content="article">
+<meta name="theme-color" content="#16120c">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #17130d;
-    --ink-soft: #2a241b;
-    --paper: #faf6ee;
-    --paper-card: #fffdf8;
-    --muted: #6c6356;
-    --muted-2: #8c8273;
-    --accent: #b4502a;
-    --accent-deep: #8f3c1d;
-    --gold: #c0913f;
+    /* Reading area (light) */
+    --bg: #faf6ee;
+    --card: #fffdf8;
+    --text: #241d14;        /* body, 15.4:1 on bg */
+    --muted: #5e5648;       /* secondary, 6.7:1 on bg */
     --line: #e6ddcd;
     --line-strong: #d6cab3;
+    /* Accents */
+    --accent-text: #9a3a16; /* eyebrows/tags, 6.5:1 on bg */
+    --link: #8c3413;        /* links, 7.5:1 on bg */
+    --accent-fill: #a8431f; /* fills; white text = 6.0:1 */
+    --gold: #d6a44c;        /* on dark only */
+    /* Fixed dark chrome (never inverts) */
+    --hero-bg: #16120c;
+    --stat-bg: #211b13;
+    --callout-bg: #1d1710;
+    --on-dark: #faf6ee;     /* 17.3:1 on hero */
+    --on-dark-soft: #e7ddcc;/* 13.9:1 */
+    --on-dark-muted: #c6b99f;/* 9.6:1, AA at small sizes */
     --maxw: 720px;
     --serif: "Fraunces", Georgia, "Times New Roman", serif;
     --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
   body {
     margin: 0;
-    background: var(--paper);
-    color: var(--ink);
+    background: var(--bg);
+    color: var(--text);
     font-family: var(--sans);
     font-size: 18px;
     line-height: 1.72;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;            /* mobile: kill any stray horizontal scroll */
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
+  img, svg { max-width: 100%; }
 
-  /* Reading progress bar */
   #progress {
     position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-    background: linear-gradient(90deg, var(--accent), var(--gold));
+    background: linear-gradient(90deg, var(--accent-fill), var(--gold));
     z-index: 60; transition: width .08s linear;
   }
 
   /* Sticky header */
   header.bar {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(250,246,238,.86);
+    background: rgba(250,246,238,.92);
     backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
     border-bottom: 1px solid var(--line);
   }
   .bar-inner {
-    max-width: 1080px; margin: 0 auto; padding: 12px 24px;
+    max-width: 1080px; margin: 0 auto; padding: 12px 20px;
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
   }
-  .bar-title { font-family: var(--sans); font-weight: 700; font-size: 14px; letter-spacing: .01em; color: var(--ink); text-decoration: none; }
-  .bar-title span { color: var(--accent); }
-  nav.jump { display: flex; gap: 22px; }
+  .bar-title { font-weight: 700; font-size: 14px; color: var(--text); text-decoration: none; line-height: 1.2; }
+  .bar-title span { color: var(--accent-text); }
+  nav.jump { display: flex; gap: 20px; }
   nav.jump a {
     font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none;
-    padding: 4px 2px; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; white-space: nowrap;
+    padding: 6px 2px; border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s; white-space: nowrap;
   }
-  nav.jump a:hover, nav.jump a.active { color: var(--ink); border-color: var(--accent); }
-  nav.jump a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
-  @media (max-width: 820px) { nav.jump { display: none; } }
+  nav.jump a:hover, nav.jump a.active { color: var(--text); border-color: var(--accent-fill); }
+  nav.jump a:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 3px; border-radius: 2px; }
+  @media (max-width: 860px) { nav.jump { display: none; } .bar-inner { justify-content: center; } }
 
   /* Hero */
-  .hero {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 88px 24px 76px;
-    position: relative; overflow: hidden;
-  }
+  .hero { background: var(--hero-bg); color: var(--on-dark); padding: 84px 24px 72px; position: relative; overflow: hidden; }
   .hero::after {
     content: ""; position: absolute; right: -160px; top: -160px; width: 520px; height: 520px;
-    background: radial-gradient(circle at center, rgba(180,80,42,.30), transparent 62%);
-    pointer-events: none;
+    background: radial-gradient(circle at center, rgba(214,164,76,.20), transparent 62%); pointer-events: none;
   }
   .hero-inner { max-width: var(--maxw); margin: 0 auto; position: relative; z-index: 1; }
-  .kicker {
-    font-size: 12.5px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
-    color: var(--gold); margin: 0 0 22px;
-  }
+  .kicker { font-size: 12.5px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin: 0 0 22px; }
   .hero h1 {
     font-family: var(--serif); font-weight: 600; font-optical-sizing: auto;
-    font-size: clamp(2.4rem, 6vw, 4.05rem); line-height: 1.04; letter-spacing: -0.015em;
-    margin: 0 0 26px;
+    font-size: clamp(2.1rem, 7vw, 4.05rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 24px;
   }
-  .hero .dek {
-    font-size: clamp(1.05rem, 2.3vw, 1.32rem); line-height: 1.6; color: #e3d8c6;
-    max-width: 38ch; margin: 0 0 34px; font-weight: 400;
-  }
-  .byline { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 14.5px; color: #c9bca6; }
-  .byline .who { font-weight: 600; color: var(--paper); }
-  .byline .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+  .hero .dek { font-size: clamp(1.05rem, 2.3vw, 1.32rem); line-height: 1.6; color: var(--on-dark-soft); max-width: 38ch; margin: 0 0 32px; }
+  .byline { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 14.5px; color: var(--on-dark-muted); }
+  .byline .who { font-weight: 600; color: var(--on-dark); }
+  .byline .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent-fill); flex: 0 0 auto; }
 
   /* Stat band */
-  .stats {
-    background: var(--ink-soft); color: var(--paper);
-    border-top: 1px solid rgba(255,255,255,.06);
-  }
-  .stats-inner {
-    max-width: var(--maxw); margin: 0 auto; padding: 30px 24px;
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
-  }
-  .stat .num { font-family: var(--serif); font-weight: 600; font-size: clamp(1.5rem, 4vw, 2.05rem); color: var(--gold); line-height: 1.1; }
-  .stat .lbl { font-size: 12.5px; color: #b7ab95; margin-top: 6px; line-height: 1.4; }
+  .stats { background: var(--stat-bg); color: var(--on-dark); border-top: 1px solid rgba(255,255,255,.06); }
+  .stats-inner { max-width: var(--maxw); margin: 0 auto; padding: 28px 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .stat .num { font-family: var(--serif); font-weight: 600; font-size: clamp(1.45rem, 4vw, 2rem); color: var(--gold); line-height: 1.1; }
+  .stat .lbl { font-size: 12.5px; color: var(--on-dark-muted); margin-top: 6px; line-height: 1.4; }
   @media (max-width: 560px) {
-    .stats-inner { grid-template-columns: 1fr; gap: 18px; }
+    .stats-inner { grid-template-columns: 1fr; gap: 14px; padding: 22px 24px; }
     .stat { display: flex; align-items: baseline; gap: 12px; }
-    .stat .num { font-size: 1.4rem; }
+    .stat .num { font-size: 1.35rem; flex: 0 0 auto; }
     .stat .lbl { margin-top: 0; }
   }
 
-  /* Main content */
-  main { max-width: var(--maxw); margin: 0 auto; padding: 64px 24px 40px; }
-  section { scroll-margin-top: 72px; }
-  section + section { margin-top: 18px; }
+  main { max-width: var(--maxw); margin: 0 auto; padding: 60px 24px 32px; }
+  section { scroll-margin-top: 76px; }
+  .lead { font-size: 1.16rem; line-height: 1.62; color: var(--text); }
 
-  .lead { font-size: 1.18rem; line-height: 1.66; color: var(--ink-soft); }
-
-  h2 {
-    font-family: var(--serif); font-weight: 600; font-size: clamp(1.5rem, 3.4vw, 2rem);
-    line-height: 1.16; letter-spacing: -0.01em; margin: 54px 0 8px; padding-top: 12px;
-  }
-  h2 .eyebrow {
-    display: block; font-family: var(--sans); font-size: 12px; font-weight: 700;
-    letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
-  }
-  h3 { font-family: var(--sans); font-weight: 700; font-size: 1.05rem; margin: 28px 0 6px; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.45rem, 5vw, 2rem); line-height: 1.16; letter-spacing: -0.01em; margin: 52px 0 8px; }
+  h2 .eyebrow { display: block; font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-text); margin-bottom: 12px; }
+  h3 { font-weight: 700; font-size: 1.05rem; margin: 26px 0 6px; }
   p { margin: 0 0 20px; }
-  a { color: var(--accent-deep); }
+  a { color: var(--link); }
   strong { font-weight: 600; }
 
-  /* Cards: Task / Workflow / Agent */
+  /* Cards */
   .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 26px 0 8px; }
-  .card {
-    background: var(--paper-card); border: 1px solid var(--line); border-radius: 14px;
-    padding: 22px 20px; position: relative;
-  }
-  .card .tag {
-    font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 10px;
-  }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 20px; }
+  .card .tag { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-text); margin-bottom: 10px; }
   .card h3 { margin: 0 0 8px; font-family: var(--serif); font-weight: 600; font-size: 1.25rem; }
-  .card p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0 0 12px; }
+  .card p { font-size: 15px; line-height: 1.55; color: var(--text); margin: 0 0 12px; }
   .card .eg { font-size: 13.5px; color: var(--muted); border-top: 1px dashed var(--line-strong); padding-top: 10px; }
-  .card .eg b { color: var(--ink-soft); font-weight: 600; }
+  .card .eg b { color: var(--text); font-weight: 600; }
   @media (max-width: 720px) { .cards { grid-template-columns: 1fr; } }
 
-  /* Layered list: Models / Harness / System / Agents */
-  .layers { margin: 26px 0 8px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--paper-card); }
+  /* Layers */
+  .layers { margin: 26px 0 8px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card); }
   .layer { display: flex; gap: 16px; padding: 18px 20px; }
   .layer + .layer { border-top: 1px solid var(--line); }
-  .layer .badge {
-    flex: 0 0 auto; width: 30px; height: 30px; border-radius: 8px; background: var(--ink); color: var(--gold);
-    font-family: var(--serif); font-weight: 600; display: grid; place-items: center; font-size: 15px;
-  }
+  .layer .badge { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 8px; background: var(--hero-bg); color: var(--gold); font-family: var(--serif); font-weight: 600; display: grid; place-items: center; font-size: 15px; }
   .layer .ltext h3 { margin: 2px 0 4px; font-size: 1rem; }
-  .layer .ltext p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+  .layer .ltext p { font-size: 15px; line-height: 1.55; color: var(--text); margin: 0; }
 
-  /* Pull quote / prompt */
-  .pq {
-    margin: 34px 0; background: var(--ink); color: var(--paper); border-radius: 16px;
-    padding: 36px 34px; position: relative;
-  }
-  .pq .mark { font-family: var(--serif); font-size: 4rem; line-height: 0; color: var(--accent); position: absolute; top: 34px; left: 22px; opacity: .5; }
-  .pq blockquote {
-    margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(1.3rem, 3vw, 1.7rem);
-    line-height: 1.35; letter-spacing: -0.01em;
-  }
-  .pq .cap { margin-top: 16px; font-family: var(--sans); font-size: 14px; color: #c9bca6; }
+  /* Pull quote */
+  .pq { margin: 34px 0; background: var(--hero-bg); color: var(--on-dark); border-radius: 16px; padding: 30px 32px 30px; position: relative; }
+  .pq .mark { font-family: var(--serif); font-size: 3.2rem; line-height: 1; color: var(--gold); opacity: .55; display: block; height: .55em; margin-bottom: 6px; }
+  .pq blockquote { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(1.25rem, 4vw, 1.65rem); line-height: 1.36; letter-spacing: -0.01em; }
+  .pq .cap { margin: 16px 0 0; font-family: var(--sans); font-size: 14px; line-height: 1.5; color: var(--on-dark-muted); }
 
-  /* Flywheel steps */
+  /* Flywheel */
   .flow { list-style: none; counter-reset: step; padding: 0; margin: 26px 0 10px; }
-  .flow li {
-    counter-increment: step; position: relative; padding: 0 0 18px 56px; margin: 0;
-    border-left: 2px solid var(--line-strong); margin-left: 16px;
-  }
+  .flow li { counter-increment: step; position: relative; padding: 0 0 18px 46px; margin: 0 0 0 16px; border-left: 2px solid var(--line-strong); }
   .flow li:last-child { border-left-color: transparent; padding-bottom: 0; }
-  .flow li::before {
-    content: counter(step); position: absolute; left: -17px; top: -2px;
-    width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff;
-    font-weight: 700; font-size: 15px; display: grid; place-items: center; font-family: var(--sans);
-  }
-  .flow li:last-child::before { background: var(--ink); color: var(--gold); }
+  .flow li::before { content: counter(step); position: absolute; left: -17px; top: -2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent-fill); color: #fff; font-weight: 700; font-size: 14px; display: grid; place-items: center; }
+  .flow li:last-child::before { background: var(--hero-bg); color: var(--gold); }
   .flow li b { display: block; font-size: 1rem; margin-bottom: 2px; }
-  .flow li span { font-size: 15.5px; color: var(--ink-soft); }
+  .flow li span { font-size: 15.5px; color: var(--text); }
 
-  /* Generic styled list (buyer checklist) */
+  /* Checklist */
   ul.checklist { list-style: none; padding: 0; margin: 22px 0; }
-  ul.checklist li {
-    position: relative; padding: 14px 16px 14px 50px; border: 1px solid var(--line);
-    border-radius: 12px; background: var(--paper-card); margin-bottom: 10px; font-size: 16px; line-height: 1.5;
-  }
-  ul.checklist li::before {
-    content: ""; position: absolute; left: 18px; top: 19px; width: 9px; height: 16px;
-    border: solid var(--accent); border-width: 0 2.5px 2.5px 0; transform: rotate(40deg);
-  }
-  ul.checklist li b { font-weight: 600; }
+  ul.checklist li { position: relative; padding: 14px 16px 14px 48px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); margin-bottom: 10px; font-size: 16px; line-height: 1.5; }
+  ul.checklist li::before { content: ""; position: absolute; left: 18px; top: 18px; width: 9px; height: 16px; border: solid var(--accent-fill); border-width: 0 2.5px 2.5px 0; transform: rotate(40deg); }
 
-  /* Distrust callout (emotional peak) */
-  .callout { background: linear-gradient(180deg, #221c14, #17130d); color: var(--paper); border-radius: 16px; padding: 8px 30px 18px; margin: 30px 0; border: 1px solid rgba(192,145,63,.25); }
-  .callout h2 { color: var(--paper); }
+  /* Distrust callout */
+  .callout { background: var(--callout-bg); color: var(--on-dark); border-radius: 16px; padding: 6px 30px 20px; margin: 30px 0; border: 1px solid rgba(214,164,76,.22); }
+  .callout h2 { color: var(--on-dark); }
   .callout h2 .eyebrow { color: var(--gold); }
-  .callout p { color: #ddd2c0; }
+  .callout p { color: var(--on-dark-soft); }
   .callout strong { color: #fff; }
 
   /* Monday list */
   ol.monday { list-style: none; counter-reset: m; padding: 0; margin: 24px 0; }
-  ol.monday li {
-    counter-increment: m; position: relative; padding: 12px 16px 12px 52px; margin-bottom: 8px;
-    font-size: 16px; line-height: 1.5; border-bottom: 1px solid var(--line);
-  }
-  ol.monday li::before {
-    content: counter(m); position: absolute; left: 12px; top: 11px; width: 26px; height: 26px;
-    border-radius: 7px; background: var(--ink); color: var(--gold); font-weight: 700; font-size: 13px;
-    display: grid; place-items: center; font-family: var(--sans);
-  }
+  ol.monday li { counter-increment: m; position: relative; padding: 12px 8px 12px 50px; margin-bottom: 8px; font-size: 16px; line-height: 1.5; border-bottom: 1px solid var(--line); }
+  ol.monday li::before { content: counter(m); position: absolute; left: 10px; top: 11px; width: 28px; height: 28px; border-radius: 7px; background: var(--hero-bg); color: var(--gold); font-weight: 700; font-size: 13px; display: grid; place-items: center; }
 
   /* Closing */
-  .closing { border-top: 3px solid var(--ink); margin-top: 40px; padding-top: 28px; }
-  .closing p:first-of-type { font-family: var(--serif); font-size: 1.3rem; line-height: 1.4; font-weight: 500; color: var(--ink); }
+  .closing { border-top: 3px solid var(--text); margin-top: 40px; padding-top: 26px; }
+  .closing p:first-of-type { font-family: var(--serif); font-size: 1.28rem; line-height: 1.4; font-weight: 500; color: var(--text); }
 
-  footer {
-    background: var(--ink); color: #b7ab95; text-align: center; padding: 46px 24px;
-    font-size: 14px; margin-top: 56px;
+  /* CTA / lead-gen */
+  .cta { background: var(--hero-bg); color: var(--on-dark); }
+  .cta-inner { max-width: var(--maxw); margin: 0 auto; padding: 64px 24px; }
+  .cta .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; }
+  .cta h2 { font-family: var(--serif); font-weight: 600; color: var(--on-dark); font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.12; margin: 0 0 14px; }
+  .cta .sub { color: var(--on-dark-soft); font-size: 1.05rem; line-height: 1.6; max-width: 46ch; margin: 0 0 28px; }
+  form.lead { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { font-size: 13px; font-weight: 600; color: var(--on-dark-soft); }
+  .field label .req { color: var(--gold); }
+  .field input, .field select, .field textarea {
+    width: 100%; min-height: 50px; padding: 13px 14px; font-family: var(--sans); font-size: 16px; /* 16px prevents iOS zoom-on-focus */
+    color: var(--text); background: #fffdf8; border: 1px solid #4a4031; border-radius: 10px; line-height: 1.4;
   }
-  footer a { color: var(--gold); text-decoration: none; font-weight: 600; }
+  .field textarea { min-height: 110px; resize: vertical; }
+  .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; border-color: var(--gold); }
+  .cta button {
+    grid-column: 1 / -1; justify-self: start; min-height: 52px; padding: 14px 30px; margin-top: 4px;
+    font-family: var(--sans); font-size: 16px; font-weight: 700; color: #fff; background: var(--accent-fill);
+    border: none; border-radius: 10px; cursor: pointer; transition: background .15s, transform .05s;
+  }
+  .cta button:hover { background: #913717; }
+  .cta button:active { transform: translateY(1px); }
+  .cta button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .cta .privacy { grid-column: 1 / -1; font-size: 12.5px; color: var(--on-dark-muted); margin: 6px 0 0; line-height: 1.5; }
+  #form-status { grid-column: 1 / -1; font-size: 15px; line-height: 1.5; margin: 4px 0 0; min-height: 1px; }
+  #form-status.ok { color: var(--gold); font-weight: 600; }
+  #form-status.err { color: #f0a17a; font-weight: 600; }
+  @media (max-width: 600px) { form.lead { grid-template-columns: 1fr; } .cta button { width: 100%; justify-self: stretch; text-align: center; } }
+
+  footer { background: var(--hero-bg); color: var(--on-dark-muted); text-align: center; padding: 44px 24px calc(44px + env(safe-area-inset-bottom)); font-size: 14px; border-top: 1px solid rgba(255,255,255,.06); }
+  footer a { color: var(--gold); text-decoration: none; font-weight: 600; display: inline-block; padding: 6px 2px; min-height: 24px; }
   footer a:hover { text-decoration: underline; }
-  footer .name { color: var(--paper); font-family: var(--serif); font-size: 1.05rem; }
+  footer .name { color: var(--on-dark); font-family: var(--serif); font-size: 1.05rem; }
+  footer p { margin: 0 0 6px; }
 
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
 
-  /* Dark mode for the reading body */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --paper: #14110c; --paper-card: #1d1810; --ink: #f2ebdd; --ink-soft: #d8cdb8;
-      --muted: #a99e8a; --muted-2: #8c8273; --line: #2e271c; --line-strong: #3a3326;
-    }
-    header.bar { background: rgba(20,17,12,.86); }
-    .card .eg b, .layer .ltext p, .lead { color: var(--ink-soft); }
+  /* Tighter spacing on small phones */
+  @media (max-width: 600px) {
+    body { font-size: 17px; }
+    .hero { padding: 56px 20px 48px; }
+    main { padding: 44px 20px 24px; }
+    h2 { margin: 44px 0 8px; }
+    .pq { padding: 24px 22px; margin: 28px 0; }
+    .cta-inner { padding: 48px 20px; }
+    .callout { padding: 4px 20px 16px; }
+    ul.checklist li { padding: 13px 14px 13px 44px; }
+  }
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 1.95rem; }
+    .stat .num { font-size: 1.25rem; }
   }
 </style>
 </head>
@@ -257,7 +242,7 @@
 
 <header class="bar">
   <div class="bar-inner">
-    <a class="bar-title" href="#top">Shelly Palmer <span>· ECEF '26</span></a>
+    <a class="bar-title" href="#top">Shelly Palmer <span>&middot; ECEF '26</span></a>
     <nav class="jump" aria-label="Section navigation">
       <a href="#where">Where we are</a>
       <a href="#deploy">Task / Workflow / Agent</a>
@@ -265,6 +250,7 @@
       <a href="#flywheel">The flywheel</a>
       <a href="#distrust">Default to distrust</a>
       <a href="#monday">Monday</a>
+      <a href="#work">Work with Shelly</a>
     </nav>
   </div>
 </header>
@@ -307,24 +293,9 @@
     <h2><span class="eyebrow">The Vocabulary</span>The three ways AI gets deployed</h2>
     <p>Most confusion in the market comes from using one word for three different things. Use these definitions with any vendor who walks into your office.</p>
     <div class="cards">
-      <div class="card">
-        <div class="tag">One call</div>
-        <h3>Task</h3>
-        <p>A single model call. One prompt, one job.</p>
-        <div class="eg"><b>Like:</b> "Summarize this email." "Classify this document."</div>
-      </div>
-      <div class="card">
-        <div class="tag">Mappable</div>
-        <h3>Workflow</h3>
-        <p>A process you could map yourself. A to B to C, with decision points. The workhorse of real corporate AI.</p>
-        <div class="eg"><b>Like:</b> a proposal writer, a post-show audit, a ticket-sales analysis.</div>
-      </div>
-      <div class="card">
-        <div class="tag">Autonomous</div>
-        <h3>Agent</h3>
-        <p>A tool that decides its own path. You give it a goal, it determines how to reach it, calling tools in a loop.</p>
-        <div class="eg"><b>Like:</b> "Buy my CES tickets," handled end to end.</div>
-      </div>
+      <div class="card"><div class="tag">One call</div><h3>Task</h3><p>A single model call. One prompt, one job.</p><div class="eg"><b>Like:</b> "Summarize this email." "Classify this document."</div></div>
+      <div class="card"><div class="tag">Mappable</div><h3>Workflow</h3><p>A process you could map yourself. A to B to C, with decision points. The workhorse of real corporate AI.</p><div class="eg"><b>Like:</b> a proposal writer, a post-show audit, a ticket-sales analysis.</div></div>
+      <div class="card"><div class="tag">Autonomous</div><h3>Agent</h3><p>A tool that decides its own path. You give it a goal, it determines how to reach it, calling tools in a loop.</p><div class="eg"><b>Like:</b> "Buy my CES tickets," handled end to end.</div></div>
     </div>
     <p>We build a lot of workflows for clients and very few agents. Some Fortune 500 companies are running 20,000 to 30,000 workflows and only a handful of true agents. You call a workflow by writing a sentence. Type "I need to write a proposal for ECEF" and the system recognizes the word "proposal" and runs every step. Nobody gets trained to operate it.</p>
   </section>
@@ -414,6 +385,50 @@
   </section>
 </main>
 
+<section class="cta" id="work">
+  <div class="cta-inner">
+    <p class="eyebrow">Work With Shelly Palmer</p>
+    <h2>Bring this conversation to your team</h2>
+    <p class="sub">Shelly and The Palmer Group help leadership teams turn the AI landscape into a working operating model: keynotes, executive briefings, and hands-on advisory. Tell us what you are working on and we will be in touch.</p>
+    <form class="lead" id="lead-form" novalidate>
+      <div class="field">
+        <label for="lf-name">Name <span class="req" aria-hidden="true">*</span></label>
+        <input id="lf-name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="lf-email">Work email <span class="req" aria-hidden="true">*</span></label>
+        <input id="lf-email" name="email" type="email" inputmode="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="lf-company">Company <span class="req" aria-hidden="true">*</span></label>
+        <input id="lf-company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="lf-role">Title / role</label>
+        <input id="lf-role" name="role" type="text" autocomplete="organization-title">
+      </div>
+      <div class="field full">
+        <label for="lf-interest">What are you interested in?</label>
+        <select id="lf-interest" name="interest">
+          <option value="">Select one</option>
+          <option>Keynote or speaking engagement</option>
+          <option>Executive / board briefing</option>
+          <option>AI advisory engagement</option>
+          <option>Workshop for my team</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label for="lf-message">What are you working on?</label>
+        <textarea id="lf-message" name="message" autocomplete="off"></textarea>
+      </div>
+      <button type="submit" id="lf-submit">Start the conversation</button>
+      <p id="form-status" role="status" aria-live="polite"></p>
+      <p class="privacy">We use your information only to follow up about working together. No lists, no spam.</p>
+    </form>
+  </div>
+</section>
+
 <footer>
   <p class="name">Shelly Palmer</p>
   <p>CEO, The Palmer Group &middot; ECEF '26 Post-Read</p>
@@ -422,38 +437,61 @@
 
 <script>
   (function () {
-    var bar = document.getElementById('progress');
-    var ticking = false;
+    // Reading progress
+    var bar = document.getElementById('progress'), ticking = false;
     function update() {
       var h = document.documentElement;
       var max = h.scrollHeight - h.clientHeight;
-      var pct = max > 0 ? (h.scrollTop || document.body.scrollTop) / max * 100 : 0;
-      bar.style.width = pct + '%';
+      bar.style.width = (max > 0 ? (h.scrollTop || document.body.scrollTop) / max * 100 : 0) + '%';
       ticking = false;
     }
-    window.addEventListener('scroll', function () {
-      if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
-    }, { passive: true });
+    window.addEventListener('scroll', function () { if (!ticking) { requestAnimationFrame(update); ticking = true; } }, { passive: true });
     update();
 
-    // Active-section highlight in the sticky nav
-    var links = Array.prototype.slice.call(document.querySelectorAll('nav.jump a'));
-    var map = {};
-    links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+    // Active-section highlight
+    var links = [].slice.call(document.querySelectorAll('nav.jump a'));
+    var map = {}; links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
     if ('IntersectionObserver' in window) {
-      var obs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
+      var obs = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
           if (e.isIntersecting && map[e.target.id]) {
             links.forEach(function (l) { l.classList.remove('active'); });
             map[e.target.id].classList.add('active');
           }
         });
       }, { rootMargin: '-45% 0px -50% 0px' });
-      Object.keys(map).forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) obs.observe(el);
-      });
+      Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) obs.observe(el); });
     }
+
+    // Lead form. Set window.LEAD_ENDPOINT (or data-endpoint) to a POST URL to capture
+    // server-side; otherwise falls back to a pre-filled email to The Palmer Group.
+    var form = document.getElementById('lead-form');
+    var status = document.getElementById('form-status');
+    var LEAD_ENDPOINT = window.LEAD_ENDPOINT || form.getAttribute('data-endpoint') || '';
+    var LEAD_EMAIL = 'leads@shellypalmer.com';
+    function val(n) { var el = form.elements[n]; return el ? el.value.trim() : ''; }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      status.className = ''; status.textContent = '';
+      if (!val('name') || !val('email') || !val('company')) {
+        status.className = 'err'; status.textContent = 'Please add your name, work email, and company.'; return;
+      }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email'))) {
+        status.className = 'err'; status.textContent = 'That email address does not look right.'; return;
+      }
+      var payload = { name: val('name'), email: val('email'), company: val('company'), role: val('role'), interest: val('interest'), message: val('message'), source: 'ECEF 2026 Post-Read' };
+      if (LEAD_ENDPOINT) {
+        var btn = document.getElementById('lf-submit'); btn.disabled = true; status.textContent = 'Sending...';
+        fetch(LEAD_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+          .then(function (r) { if (!r.ok) throw new Error(r.status); status.className = 'ok'; status.textContent = 'Thank you. We will be in touch shortly.'; form.reset(); })
+          .catch(function () { status.className = 'err'; status.textContent = 'Something went wrong. Email us directly at ' + LEAD_EMAIL + '.'; })
+          .finally(function () { btn.disabled = false; });
+      } else {
+        var body = 'Name: ' + payload.name + '%0D%0AEmail: ' + payload.email + '%0D%0ACompany: ' + payload.company + '%0D%0ARole: ' + payload.role + '%0D%0AInterest: ' + payload.interest + '%0D%0A%0D%0A' + payload.message + '%0D%0A%0D%0A(via ECEF 2026 Post-Read)';
+        window.location.href = 'mailto:' + LEAD_EMAIL + '?subject=' + encodeURIComponent('Inquiry from ' + payload.name + ', ' + payload.company) + '&body=' + body;
+        status.className = 'ok'; status.textContent = 'Opening your email app to send. If nothing happens, email ' + LEAD_EMAIL + '.';
+      }
+    });
   })();
 </script>
 </body>

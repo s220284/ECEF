@@ -227,31 +227,16 @@
   .cta .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; }
   .cta h2 { font-family: var(--serif); font-weight: 600; color: var(--on-dark); font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.12; margin: 0 0 14px; }
   .cta .sub { color: var(--on-dark-soft); font-size: 1.05rem; line-height: 1.6; margin: 0 0 28px; }
-  form.lead { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .field { display: flex; flex-direction: column; gap: 7px; }
-  .field.full { grid-column: 1 / -1; }
-  .field label { font-size: 13px; font-weight: 600; color: var(--on-dark-soft); }
-  .field label .req { color: var(--gold); }
-  .field input, .field select, .field textarea {
-    width: 100%; min-height: 50px; padding: 13px 14px; font-family: var(--sans); font-size: 16px; /* 16px prevents iOS zoom-on-focus */
-    color: var(--text); background: #fffdf8; border: 1px solid #4a4031; border-radius: 10px; line-height: 1.4;
-  }
-  .field textarea { min-height: 110px; resize: vertical; }
-  .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; border-color: var(--gold); }
-  .cta button {
-    grid-column: 1 / -1; justify-self: start; min-height: 52px; padding: 14px 30px; margin-top: 4px;
+  .cta .cta-btn {
+    display: inline-block; padding: 16px 34px; margin-top: 4px;
     font-family: var(--sans); font-size: 16px; font-weight: 700; color: #fff; background: var(--accent-fill);
-    border: none; border-radius: 10px; cursor: pointer; transition: background .15s, transform .05s;
+    border-radius: 10px; text-decoration: none; transition: background .15s, transform .05s;
   }
-  .cta button:hover { background: #913717; }
-  .cta button:active { transform: translateY(1px); }
-  .cta button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .cta .cta-btn:hover { background: #913717; }
+  .cta .cta-btn:active { transform: translateY(1px); }
+  .cta .cta-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
   .privacy { font-size: 13.5px; line-height: 1.5; color: var(--muted); }
-  .cta .privacy { grid-column: 1 / -1; font-size: 12.5px; color: var(--on-dark-muted); margin: 6px 0 0; line-height: 1.5; }
-  #form-status { grid-column: 1 / -1; font-size: 15px; line-height: 1.5; margin: 4px 0 0; min-height: 1px; }
-  #form-status.ok { color: var(--gold); font-weight: 600; }
-  #form-status.err { color: #f0a17a; font-weight: 600; }
-  @media (max-width: 600px) { form.lead { grid-template-columns: 1fr; } .cta button { width: 100%; justify-self: stretch; text-align: center; } }
+  @media (max-width: 600px) { .cta .cta-btn { display: block; text-align: center; } }
 
   footer { background: var(--hero-bg); color: var(--on-dark-muted); text-align: center; padding: 44px 24px calc(44px + env(safe-area-inset-bottom)); font-size: 14px; border-top: 1px solid rgba(255,255,255,.06); }
   footer a { color: var(--gold); text-decoration: none; font-weight: 600; display: inline-block; padding: 6px 2px; min-height: 24px; }
@@ -439,42 +424,7 @@
     <p class="eyebrow">Work With Shelly Palmer</p>
     <h2>Bring this conversation to your team</h2>
     <p class="sub">The Palmer Group helps leadership teams turn the AI landscape into a working operating model: keynotes, executive briefings, and hands-on advisory. If you are thinking about how to deploy AI at scale, we can help.</p>
-    <form class="lead" id="lead-form" data-endpoint="" novalidate>
-      <div class="field">
-        <label for="lf-name">Name <span class="req" aria-hidden="true">*</span></label>
-        <input id="lf-name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="lf-email">Work email <span class="req" aria-hidden="true">*</span></label>
-        <input id="lf-email" name="email" type="email" inputmode="email" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="lf-company">Company <span class="req" aria-hidden="true">*</span></label>
-        <input id="lf-company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <div class="field">
-        <label for="lf-role">Title / role</label>
-        <input id="lf-role" name="role" type="text" autocomplete="organization-title">
-      </div>
-      <div class="field full">
-        <label for="lf-interest">What are you interested in?</label>
-        <select id="lf-interest" name="interest">
-          <option value="">Select one</option>
-          <option>Keynote or speaking engagement</option>
-          <option>Executive / board briefing</option>
-          <option>AI advisory engagement</option>
-          <option>Workshop for my team</option>
-          <option>Something else</option>
-        </select>
-      </div>
-      <div class="field full">
-        <label for="lf-message">What are you working on?</label>
-        <textarea id="lf-message" name="message" autocomplete="off"></textarea>
-      </div>
-      <button type="submit" id="lf-submit">Start the conversation</button>
-      <p id="form-status" role="status" aria-live="polite"></p>
-      <p class="privacy">We use your information only to follow up about working together. No lists, no spam.</p>
-    </form>
+    <a class="cta-btn" href="https://shellypalmer.com/contact-us/" target="_blank" rel="noopener noreferrer">Get in touch</a>
   </div>
 </section>
 
@@ -529,38 +479,6 @@
       Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) obs.observe(el); });
     }
 
-    // Lead form. Set window.LEAD_ENDPOINT (or data-endpoint) to a POST URL to capture
-    // server-side; otherwise falls back to a pre-filled email to The Palmer Group.
-    var form = document.getElementById('lead-form');
-    var status = document.getElementById('form-status');
-    var LEAD_ENDPOINT = window.LEAD_ENDPOINT || form.getAttribute('data-endpoint') || '';
-    var LEAD_EMAIL = 'leads@shellypalmer.com';
-    function val(n) { var el = form.elements[n]; return el ? el.value.trim() : ''; }
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      status.className = ''; status.textContent = '';
-      if (!val('name') || !val('email') || !val('company')) {
-        status.className = 'err'; status.textContent = 'Please add your name, work email, and company.'; return;
-      }
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email'))) {
-        status.className = 'err'; status.textContent = 'That email address does not look right.'; return;
-      }
-      var payload = { name: val('name'), email: val('email'), company: val('company'), role: val('role'), interest: val('interest'), message: val('message'), source: 'ECEF 2026 Post-Read' };
-      if (LEAD_ENDPOINT) {
-        // Google Apps Script web apps do not send CORS headers. Posting as
-        // text/plain avoids the preflight; mode:'no-cors' gives an opaque
-        // response (we can't read status), so we treat a resolved fetch as success.
-        var btn = document.getElementById('lf-submit'); btn.disabled = true; status.className = ''; status.textContent = 'Sending...';
-        fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-          .then(function () { status.className = 'ok'; status.textContent = 'Thank you. We will be in touch shortly.'; form.reset(); })
-          .catch(function () { status.className = 'err'; status.textContent = 'Something went wrong. Email us directly at ' + LEAD_EMAIL + '.'; })
-          .finally(function () { btn.disabled = false; });
-      } else {
-        var body = 'Name: ' + payload.name + '%0D%0AEmail: ' + payload.email + '%0D%0ACompany: ' + payload.company + '%0D%0ARole: ' + payload.role + '%0D%0AInterest: ' + payload.interest + '%0D%0A%0D%0A' + payload.message + '%0D%0A%0D%0A(via ECEF 2026 Post-Read)';
-        window.location.href = 'mailto:' + LEAD_EMAIL + '?subject=' + encodeURIComponent('Inquiry from ' + payload.name + ', ' + payload.company) + '&body=' + body;
-        status.className = 'ok'; status.textContent = 'Opening your email app to send. If nothing happens, email ' + LEAD_EMAIL + '.';
-      }
-    });
   })();
 </script>
 </body>
